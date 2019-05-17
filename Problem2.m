@@ -99,4 +99,10 @@ u_inter_n2_1
 v_inter_n2_1 = double(f_nullcline_n2_1(u_inter_n2_1))
 
 
+%StreamPlot made using Wolfram Alpha Online
 
+%-------------------------------------------------------------------------
+%Part D - Construct Jacobian
+%-------------------------------------------------------------------------
+
+%Work done by hand to linearize then find the partial derivatives
