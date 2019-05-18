@@ -77,6 +77,9 @@ u_inter_n2_2 = double(solve(f_nullcline_n2_2(u) == g_nullclines_n2(u),u))
 %-------------------------------------------------------------------------
 
 %Define Functions with different n
+%From Part A:
+%f(u,v,n) = alpha/(1+v^n)-u;
+%g(u,v,n) = alpha/(1+u^n)-v;
 %n = 1
 f_n1(u,v) = f(u,v,1);
 g_n1(u,v) = g(u,v,1);
@@ -105,4 +108,61 @@ v_inter_n2_1 = double(f_nullcline_n2_1(u_inter_n2_1))
 %Part D - Construct Jacobian
 %-------------------------------------------------------------------------
 
-%Work done by hand to linearize then find the partial derivatives
+%Work done by hand to find the Jacobian, typed in the write-up 
+
+%Solve for cases when detJ > 0 under different cases 
+
+%alpha = 10, u_S = v_2 = 10, solve for n 
+syms n_var
+alpha = 10;
+u_S = 2; 
+n_det0 = solve(det_fun(u_S,n_var,alpha) ==0,n_var);
+%n = 1.6231 when solved
+%Find det above and below this value
+at1 = det_fun(u_S,1.6231,alpha);
+above1 = det_fun(u_S,1.7,alpha);
+below1 = det_fun(u_S,1.5,alpha);
+
+%-------------------------------------------------------------------------
+%Part E - Find the Eigenvalues at the center SS for n=1 and n=2
+%-------------------------------------------------------------------------
+
+%n = 1
+alpha = 10;
+nd1 = 1; %n = 1
+ss_nd1 = 2.7; %u_S = 1
+[trJ1, detJ1, e_nd1_1, e_nd2_2] = eigen(ss_nd1,nd1,alpha)
+
+%n=2 
+alpha = 10;
+nd2 = 2; %n = 1
+ss_nd2 = 2; %u_S = 1
+[trJ2, detJ2, e_nd2_1, e_nd2_2] = eigen(ss_nd2,nd2,alpha)
+
+%-------------------------------------------------------------------------
+%FUNCTIONS for Problem 2
+%-------------------------------------------------------------------------
+
+%-----------Functions for Part D
+
+%Find the determinant function 
+function detJ = det_fun(ss,n,alpha) 
+   
+    detJ = 1 - alpha^2 * n^2 * ss^(2*n - 2) / ((ss^n + 1)^4);
+
+end
+
+%-----------Functions for Part E
+
+%Eigenvalue Functions
+function [trJ,detJ,eigen1,eigen2] = eigen(ss,n,alpha) 
+    
+    trJ = -2; %Constant, solved in part D
+    
+    detJ = 1 - alpha^2 * n^2 * ss^(2*n - 2) / ((ss^n + 1)^4);
+    
+    eigen1 = (trJ + sqrt(trJ^2 - 4*detJ))/2;
+    
+    eigen2 = (trJ - sqrt(trJ^2 - 4*detJ))/2;
+
+end
